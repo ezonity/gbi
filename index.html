@@ -88,6 +88,7 @@
                             <option value="BMirk">BMirk</option>
                             <option value="Expedise">Expedise</option>
                             <option value="Green Pasture">Green Pasture</option>
+                            <option value="Unknown">Unknown</option>
                         </select>
                     </div>
                     <div>
@@ -101,6 +102,7 @@
                             <option value="CP">CP</option>
                             <option value="BP">BP</option>
                             <option value="CFC">CFC</option>
+                            <option value="Unknown">Unknown</option>
                         </select>
                     </div>
                 </div>
@@ -137,6 +139,7 @@
                                 <option value="Thursday">Thursday</option>
                                 <option value="Friday">Friday</option>
                                 <option value="Saturday">Saturday</option>
+                                <option value="Unknown">Unknown</option>
                             </select>
                         </div>
                     </div>
@@ -168,6 +171,7 @@
                                 <option value="Friday">Friday</option>
                                 <option value="Saturday">Saturday</option>
                                 <option value="Sunday">Sunday</option>
+                                <option value="Unknown">Unknown</option>
                             </select>
                         </div>
                         <div>
@@ -185,6 +189,33 @@
                 <button type="button" id="add-specific-change-btn" class="mt-4 w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-sky-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     Add Specific Change
+                </button>
+            </div>
+            
+            <!-- Vacation Leave Section -->
+            <div class="form-section">
+                 <h3 class="form-section-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-600"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" x2="16" y1="2" y2="6"></line><line x1="8" x2="8" y1="2" y2="6"></line><line x1="3" x2="21" y1="10" y2="10"></line><path d="m9 16 2 2 4-4"></path></svg>
+                    <span>Vacation Leave (Optional)</span>
+                </h3>
+                <div id="vacation-leave-container" class="space-y-4">
+                    <!-- Template for a single leave date -->
+                    <div id="vacation-leave-template" class="vacation-leave-block grid grid-cols-1 md:grid-cols-3 gap-4 items-center hidden">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700">Leave Date</label>
+                            <input type="date" name="vacationDate" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500">
+                        </div>
+                        <div class="self-end pt-5">
+                             <button type="button" class="remove-leave-btn w-full flex items-center justify-center gap-2 py-2 px-4 border border-transparent rounded-lg text-sm font-medium text-red-600 hover:text-red-800 hover:bg-red-50 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" id="add-vacation-leave-btn" class="mt-4 w-full flex justify-center items-center gap-2 py-2 px-4 border-2 border-dashed border-slate-300 rounded-lg text-sm font-medium text-slate-600 hover:border-sky-500 hover:text-sky-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Vacation Leave
                 </button>
             </div>
 
@@ -255,6 +286,9 @@
             const addSpecificChangeBtn = document.getElementById('add-specific-change-btn');
             const specificChangesContainer = document.getElementById('specific-changes-container');
             const specificChangeTemplate = document.getElementById('specific-change-template');
+            const addVacationLeaveBtn = document.getElementById('add-vacation-leave-btn');
+            const vacationLeaveContainer = document.getElementById('vacation-leave-container');
+            const vacationLeaveTemplate = document.getElementById('vacation-leave-template');
             let scheduleBlockCount = 1;
 
             // --- CSV Upload Logic ---
@@ -366,7 +400,7 @@
                 scheduleBlockCount++;
                 const newBlock = document.createElement('div');
                 newBlock.className = 'schedule-block';
-                newBlock.innerHTML = `<div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-slate-700">Schedule ${scheduleBlockCount}</h3><button type="button" class="remove-schedule-btn text-sm font-medium text-red-600 hover:text-red-800">&times; Remove</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-sm font-medium text-slate-700">Date From</label><input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div><label class="block text-sm font-medium text-slate-700">Date To</label><input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Work Schedule</label><input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 9am-6pm" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Rest Day</label><select name="restDay" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"><option value="">Select a Day</option><option value="Sunday">Sunday</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option></select></div></div>`;
+                newBlock.innerHTML = `<div class="flex justify-between items-center mb-4"><h3 class="text-lg font-semibold text-slate-700">Schedule ${scheduleBlockCount}</h3><button type="button" class="remove-schedule-btn text-sm font-medium text-red-600 hover:text-red-800">&times; Remove</button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-sm font-medium text-slate-700">Date From</label><input type="date" name="transactionDateFrom" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div><label class="block text-sm font-medium text-slate-700">Date To</label><input type="date" name="transactionDateTo" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Work Schedule</label><input type="text" name="workSchedule" class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500" placeholder="e.g., 9am-6pm" required></div><div class="md:col-span-2"><label class="block text-sm font-medium text-slate-700">Rest Day</label><select name="restDay" class="mt-1 block w-full px-3 py-2 border border-slate-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500"><option value="">Select a Day</option><option value="Sunday">Sunday</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Unknown">Unknown</option></select></div></div>`;
                 scheduleBlocksContainer.appendChild(newBlock);
             };
             
@@ -377,6 +411,21 @@
                     e.target.closest('.schedule-block').remove();
                 }
             });
+            
+            // --- Vacation Leave Logic ---
+            addVacationLeaveBtn.addEventListener('click', () => {
+                const newLeaveBlock = vacationLeaveTemplate.cloneNode(true);
+                newLeaveBlock.id = '';
+                newLeaveBlock.classList.remove('hidden');
+                vacationLeaveContainer.appendChild(newLeaveBlock);
+            });
+
+            vacationLeaveContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('remove-leave-btn')) {
+                    e.target.closest('.vacation-leave-block').remove();
+                }
+            });
+
 
             // --- Specific Changes Logic ---
             addSpecificChangeBtn.addEventListener('click', () => {
@@ -407,6 +456,15 @@
                     return;
                 }
 
+                // Gather vacation leaves
+                const vacationLeaves = new Set();
+                document.querySelectorAll('.vacation-leave-block:not(#vacation-leave-template)').forEach(block => {
+                    const date = block.querySelector('[name="vacationDate"]').value;
+                    if (date) {
+                        vacationLeaves.add(date);
+                    }
+                });
+
                 // Gather specific overrides from manual form
                 const dayOverrides = {};
                 document.querySelectorAll('.specific-change-block:not(#specific-change-template)').forEach(block => {
@@ -433,7 +491,7 @@
                         allSchedulesValid = false;
                         return;
                     }
-                    addScheduleToTable(employeeInfo, scheduleData, dayOverrides, new Set());
+                    addScheduleToTable(employeeInfo, scheduleData, dayOverrides, new Set(), vacationLeaves);
                 });
 
                 if (!allSchedulesValid) {
@@ -445,7 +503,7 @@
             });
 
             // --- Shared Functions ---
-            function addScheduleToTable(employeeInfo, scheduleData, overrides, appliedOverrides) {
+            function addScheduleToTable(employeeInfo, scheduleData, overrides, appliedOverrides, vacationLeaves = new Set()) {
                 const startDate = new Date(scheduleData.transactionDateFrom);
                 const endDate = new Date(scheduleData.transactionDateTo);
                 
@@ -466,7 +524,10 @@
                     let scheduleToDisplay = '';
                     
                     const csvOverrideKey = `${employeeInfo.owfId}-${currentDateString}`;
-                    if (overrides.hasOwnProperty(csvOverrideKey)) {
+
+                    if (vacationLeaves.has(currentDateString)) {
+                        scheduleToDisplay = 'VACATION LEAVE';
+                    } else if (overrides.hasOwnProperty(csvOverrideKey)) {
                         scheduleToDisplay = overrides[csvOverrideKey].toUpperCase() === 'RESTDAY' ? 'RESTDAY' : convertToMilitaryTime(overrides[csvOverrideKey]);
                         appliedOverrides.add(csvOverrideKey); // Track that this override was used
                     } else if (overrides.hasOwnProperty(dayOfWeek)) {
@@ -500,6 +561,7 @@
                 outputContainer.style.display = 'none';
                 showStatusMessage('Table cleared.', 'info');
                 document.querySelectorAll('.specific-change-block:not(#specific-change-template)').forEach(block => block.remove());
+                document.querySelectorAll('.vacation-leave-block:not(#vacation-leave-template)').forEach(block => block.remove());
             });
 
             exportButton.addEventListener('click', function() {
@@ -548,7 +610,7 @@
             }
             
             function convertToMilitaryTime(timeString) {
-                if (!timeString || typeof timeString !== 'string' || timeString.toUpperCase() === 'RESTDAY') return 'RESTDAY';
+                if (!timeString || typeof timeString !== 'string' || timeString.toUpperCase() === 'RESTDAY' || timeString.toUpperCase() === 'VACATION LEAVE') return timeString.toUpperCase();
                 
                 const parts = timeString.replace(/–|—/g, '-').split('-').map(part => part.trim());
 
@@ -595,7 +657,7 @@
             }
 
             function calculateWorkHours(militarySchedule) {
-                if (!militarySchedule || militarySchedule === 'RESTDAY') return 0;
+                if (!militarySchedule || militarySchedule === 'RESTDAY' || militarySchedule === 'VACATION LEAVE') return 0;
                 const parts = militarySchedule.split('-');
                 if (parts.length !== 2) return 0;
                 const [startTime, endTime] = parts;
